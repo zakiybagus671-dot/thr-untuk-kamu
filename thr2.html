@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idul Fitri 1447H - Spesial Fitrah</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0f172a;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            color: white;
+        }
+
+        /* Notifikasi Ala DANA */
+        #dana-noti {
+            position: fixed;
+            top: -120px; /* Sembunyi awal */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 380px;
+            background: #118ee1;
+            color: white;
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            z-index: 10000;
+            transition: top 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .dana-logo {
+            background: white;
+            color: #118ee1;
+            min-width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+            font-size: 0.7rem;
+        }
+
+        .noti-content { text-align: left; }
+        .noti-content b { display: block; font-size: 1rem; margin-bottom: 2px; }
+        .noti-content span { font-size: 0.8rem; opacity: 0.9; }
+
+        /* Kartu Utama */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 30px;
+            border-radius: 35px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.4s;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            max-width: 320px;
+            width: 100%;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #4caf50;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .icon { font-size: 60px; margin-bottom: 15px; display: block; animation: float 3s infinite; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        h1 { font-size: 1.5rem; letter-spacing: 1px; margin: 10px 0; font-weight: 700; }
+        .tap-hint { font-size: 0.8rem; color: #94a3b8; letter-spacing: 2px; text-transform: uppercase; }
+
+        /* Modal Pop Up */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            color: #1e293b;
+            padding: 30px;
+            border-radius: 30px;
+            width: 85%;
+            max-width: 350px;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 0 100px rgba(0,0,0,0.8);
+            animation: zoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .thr-btn {
+            background: linear-gradient(45deg, #118ee1, #0669ab);
+            color: white;
+            padding: 18px;
+            border-radius: 20px;
+            margin: 20px 0;
+            font-size: 1.4rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(17, 142, 225, 0.3);
+        }
+
+        .thr-btn:active { transform: scale(0.95); }
+
+        .money {
+            position: absolute;
+            pointer-events: none;
+            z-index: 9999;
+            animation: fall 3s linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        .close-text { font-size: 0.8rem; color: #94a3b8; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div id="dana-noti">
+        <div class="dana-logo">DANA</div>
+        <div class="noti-content">
+            <b>Berhasil Isi Saldo!</b>
+            <span>Total bayar Rp 100.000 ke Saldo DANA.</span>
+        </div>
+    </div>
+
+    <div class="glass-card" onclick="openModal()">
+        <span class="icon">🌙</span>
+        <h1>Selamat Idul Fitri</h1>
+        <p class="tap-hint">Tap untuk klaim fitrah</p>
+    </div>
+
+    <div id="modal">
+        <h2 style="color: #118ee1; margin-bottom: 5px;">Minal Aidin Wal Faizin</h2>
+        <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 20px;">Mohon Maaf Lahir & Batin</p>
+        <p style="font-style: italic; font-size: 0.85rem;">"Tuku kupat keleru santen, menawi lepat nyuwun ngapunten."</p>
+        
+        <button class="thr-btn" onclick="triggerDana()">
+            KLAIM RP 100.000
+        </button>
+        
+        <p style="font-size: 0.8rem; font-weight: bold; margin-bottom: 15px;">nyo fitrah e!</p>
+        <span class="close-text" onclick="closeModal()">Nanti saja</span>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('modal').style.display = 'block';
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#118ee1', '#ffffff', '#4caf50']
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function triggerDana() {
+            // 1. Munculkan Notifikasi DANA
+            const noti = document.getElementById('dana-noti');
+            noti.style.top = '20px';
+
+            // 2. Hujan Uang
+            for(let i=0; i<50; i++) {
+                setTimeout(createMoney, i * 100);
+            }
+
+            // 3. Efek Konfeti Besar
+            confetti({
+                particleCount: 200,
+                velocity: 30,
+                spread: 360,
+                origin: { y: 0.5 }
+            });
+
+            // 4. Sembunyikan notifikasi setelah beberapa detik
+            setTimeout(() => {
+                noti.style.top = '-120px';
+            }, 6000);
+            
+            // Tutup modal setelah klaim
+            setTimeout(closeModal, 500);
+        }
+
+        function createMoney() {
+            const money = document.createElement('div');
+            money.innerText = '💵';
+            money.className = 'money';
+            money.style.left = Math.random() * 100 + 'vw';
+            money.style.top = '-50px';
+            money.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            money.style.duration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(money);
+            setTimeout(() => money.remove(), 4000);
+        }
+    </script>
+</body>
+</html>
